@@ -13,6 +13,49 @@ MJ_Book = get_text("books/MockingJay.pdf")
 THG_Movie = get_text("scripts/The_Hunger_Games_Movie.pdf")
 CF_Movie = get_text("scripts/Catching_Fire_Movie.pdf")
 
+def get_source(pdf):
+    """From the pdf if book, then source = book else movie """
+    pass
+
+def get_booktitle(pdf):
+    """Whatever the name of the dataset is minus book or movie"""
+    pass
+
+def get_chapter(pdf):
+    #current_chapter = 0
+    #if text_font_size = whatever:
+    #current_chapter += 1
+    #how to handle epilogues or prologues
+    pass
+
+def get_sequence_num(pdf):
+    #current_num = 0
+    #for each sentence in each page:
+        #current_num += 1
+    pass
+
+def get_sentence(pdf):
+    """Adds each sentence to database with 
+    Necessary information"""
+    pass
+
+def get_type(sentence):
+    """If quotations then dialogue else narration"""
+    pass
+
+def get_pov_character(pdf):
+    """if source == book, pov = katniss else...."""
+    pass
+
+# scene_id 
+# cross_reference_id			
+# speaker	
+# Topic	
+# emotion	
+# tone	
+# intensity 	
+# method	
+# confidence_score	
 
 ## 2D List. Each page has every sentence on that page
 ## [[sentence]] book[0] = page book[0][0] = sentence
