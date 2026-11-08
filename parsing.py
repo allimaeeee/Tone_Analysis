@@ -1,5 +1,12 @@
 import pymupdf
 
+books = {
+    #Title,
+    "books/The_Hunger_Games.pdf": ("The Hunger Games"),
+    "books/Catching_Fire.pdf": ("Catching Fire"),
+    "books/Mockingjay.pdf": ("Mockingjay")
+}
+
 def get_text(pdf):
     doc = pymupdf.open(pdf)
     pages = [page.get_text() for page in doc]
