@@ -22,24 +22,31 @@ def clean(text):
 def get_text(path):
     """Return a list of dicts: page, text."""
     doc = pymupdf.open(path)
-    pages = []
+    pages, meta = [], []
+    chapter = ""
+    part = ""
     last = None
     for page in doc:
         text = re.sub(r"\s+", " ", page.get_text()).strip()
+        if m := re.search(r"^\s*PART\s+([IVX]+)\s*[-–—:]?\s*(.*)$", text, re.M | re.I):
+            part = f"{m.group(1)} {m.group(2)}".strip()
+        if m := re.search(r"^\s*CHAPTER\s+(\d+)", text, re.M | re.I):
+            chapter = int(m.group(1))
         sent = [s.strip() for s in seg.segment(text) if s.strip()]
         if sent and last is not None and not re.compile(r"[.?!\"'”’…]$").search(pages[last][-1]):
             pages[last][-1] += " " + sent.pop(0)
             ## Could we use something similar for dialogue
         pages.append(sent)
+        meta.append((part, chapter))
         if sent:
             last = len(pages) - 1
-    return pages
+    return pages, meta
     
 if __name__ == "__main__":
-    THG_Book = get_text("books/The_Hunger_Games.pdf")
+    THG_Book, meta = get_text("books/The_Hunger_Games.pdf")
     rows = [
-        {"page": p, "sentence_num": i, "text": s}
-        for p, sents in enumerate(THG_Book)
+        {"book": "The Hunger Games", "page": p,"part": meta[p-1][0], "chapter": meta[p-1][1], "sentence_num": i, "text": s}
+        for p, sents in enumerate(THG_Book, start = 1)
         for i, s in enumerate(sents, start = 1)
     ]
     df = pd.DataFrame(rows)
