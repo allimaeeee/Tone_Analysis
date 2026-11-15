@@ -27,11 +27,12 @@ def get_text(path):
     part = ""
     last = None
     for page in doc:
-        text = re.sub(r"\s+", " ", page.get_text()).strip()
-        if m := re.search(r"^\s*PART\s+([IVX]+)\s*[-–—:]?\s*(.*)$", text, re.M | re.I):
+        raw = page.get_text()
+        if m := re.search(r"^\s*PART\s+([IVX]+)\s*[-–—:]?\s*(.*)$", raw, re.M | re.I):
             part = f"{m.group(1)} {m.group(2)}".strip()
-        if m := re.search(r"^\s*CHAPTER\s+(\d+)", text, re.M | re.I):
+        if m := re.search(r"^\s*CHAPTER\s+(\d+)", raw, re.M | re.I):
             chapter = int(m.group(1))
+        text = re.sub(r"\s+", " ", raw).strip()
         sent = [s.strip() for s in seg.segment(text) if s.strip()]
         if sent and last is not None and not re.compile(r"[.?!\"'”’…]$").search(pages[last][-1]):
             pages[last][-1] += " " + sent.pop(0)
